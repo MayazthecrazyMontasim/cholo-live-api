@@ -11,21 +11,26 @@ router = APIRouter(
 
 @router.post("/register", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    # Check if user exists
-    db_user = db.query(models.User).filter((models.User.email == user.email) | (models.User.username == user.username)).first()
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email or Username already registered")
-    
-    hashed_password = security.get_password_hash(user.password)
-    new_user = models.User(
-        username=user.username,
-        email=user.email,
-        hashed_password=hashed_password
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+    try:
+        # Check if user exists
+        db_user = db.query(models.User).filter((models.User.email == user.email) | (models.User.username == user.username)).first()
+        if db_user:
+            raise HTTPException(status_code=400, detail="Email or Username already registered")
+        
+        hashed_password = security.get_password_hash(user.password)
+        new_user = models.User(
+            username=user.username,
+            email=user.email,
+            hashed_password=hashed_password
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    except Exception as e:
+        print(f"Registration error: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
 
 @router.post("/token", response_model=schemas.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
