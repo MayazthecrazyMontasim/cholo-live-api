@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
+from .database import init_db
 from .routers import auth, destinations, budget, trips, chat
 
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
+# Initialize Database
+init_db()
 
 app = FastAPI(
     title="Cholo Backend API",
