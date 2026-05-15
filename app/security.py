@@ -8,9 +8,9 @@ import os
 from . import database, models
 from sqlalchemy.orm import Session
 
-SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey_cholo_123")
+SECRET_KEY = os.getenv("SECRET_KEY", "cholo-dev-secret-change-in-production-2024!")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 1 week
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))  # 24 hours default
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
