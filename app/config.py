@@ -29,6 +29,9 @@ ALLOWED_ORIGINS = os.getenv(
     "http://localhost:3000,http://localhost:8000,https://cholo-frontend.vercel.app"
 ).split(",")
 
+# Third-party APIs (stored server-side only — never exposed to frontend)
+FOURSQUARE_API_KEY = os.getenv("FOURSQUARE_API_KEY", "")
+
 # Stripe (for billing)
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")

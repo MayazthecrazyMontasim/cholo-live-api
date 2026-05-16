@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from .database import init_db
-from .routers import auth, destinations, budget, trips, chat, organizations
+from .routers import auth, destinations, budget, trips, chat, organizations, proxy
 from .config import ALLOWED_ORIGINS, PROJECT_NAME, PROJECT_VERSION
 
 logging.basicConfig(
@@ -65,6 +65,7 @@ app.include_router(budget.router)
 app.include_router(trips.router)
 app.include_router(chat.router)
 app.include_router(organizations.router)
+app.include_router(proxy.router)
 
 
 @app.get("/", tags=["Root"])
